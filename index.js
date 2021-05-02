@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const User = require('./models/user');
+const Farm = require('./models/farm');
+const Product = require('./models/product');
 
 mongoose.connect('mongodb://localhost:27017/relationshipDB', {
   useCreateIndex: true,
@@ -38,4 +40,22 @@ const addAddress = async (id) => {
   console.log(res);
 };
 
-// addAddress('608f07fa2f4ea81e88ab11f9');
+const createStardew = async () => {
+  const farm = new Farm({
+    name: 'Mikasa Ranch',
+    city: 'Stardew Valley',
+    size: 'medium',
+  });
+  await farm.save();
+  console.log(farm);
+};
+
+const buySpringProduct = async (productName) => {
+  const farm = await Farm.findOne({ name: 'Mikasa Ranch' });
+  const product = await Product.findOne({ name: productName });
+  farm.products.push(product);
+  await farm.save();
+  console.log(farm);
+};
+
+buySpringProduct('Potato');

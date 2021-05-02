@@ -10,6 +10,10 @@ mongoose.connect('mongodb://localhost:27017/relationshipDB', {
 const farmSchema = new Schema({
   name: String,
   city: String,
+  size: {
+    type: String,
+    enum: ['small', 'medium', 'large'],
+  },
   products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
 });
 
