@@ -38,4 +38,4 @@ const addAddress = async (id) => {
   console.log(res);
 };
 
-addAddress('608f07fa2f4ea81e88ab11f9').then(() => mongoose.connection.close());
+// addAddress('608f07fa2f4ea81e88ab11f9');
