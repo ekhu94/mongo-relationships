@@ -17,40 +17,40 @@ db.once('open', () => {
   console.log('Database connection open');
 });
 
-const app = express();
+// const app = express();
 
-const createUser = async () => {
-  const user = new User({
-    first: 'Kiryu',
-    last: 'Kazuma',
-  });
-  const res = await user.save();
-  console.log(res);
-};
+// const createUser = async () => {
+//   const user = new User({
+//     first: 'Kiryu',
+//     last: 'Kazuma',
+//   });
+//   const res = await user.save();
+//   console.log(res);
+// };
 
-const addAddress = async (id) => {
-  const user = await User.findById(id);
-  user.addresses.push({
-    street_address: 'Kamurocho Hills',
-    city: 'Tokyo',
-    state: 'Tokyo',
-    zip_code: 011888,
-  });
-  const res = await user.save();
-  console.log(res);
-};
+// const addAddress = async (id) => {
+//   const user = await User.findById(id);
+//   user.addresses.push({
+//     street_address: 'Kamurocho Hills',
+//     city: 'Tokyo',
+//     state: 'Tokyo',
+//     zip_code: 011888,
+//   });
+//   const res = await user.save();
+//   console.log(res);
+// };
 
-const createStardew = async () => {
-  const farm = new Farm({
-    name: 'Mikasa Ranch',
-    city: 'Stardew Valley',
-    size: 'medium',
-  });
-  await farm.save();
-  console.log(farm);
-};
+// const createStardew = async () => {
+//   const farm = new Farm({
+//     name: 'Mikasa Ranch',
+//     city: 'Stardew Valley',
+//     size: 'medium',
+//   });
+//   await farm.save();
+//   console.log(farm);
+// };
 
-const buySpringProduct = async (productName) => {
+const buyNewProduct = async (productName) => {
   const farm = await Farm.findOne({ name: 'Mikasa Ranch' });
   const product = await Product.findOne({ name: productName });
   farm.products.push(product);
@@ -58,4 +58,10 @@ const buySpringProduct = async (productName) => {
   console.log(farm);
 };
 
-buySpringProduct('Potato');
+const showFarmWithProducts = async (farmName) => {
+  const farm = await Farm.findOne({ name: farmName })
+    .populate('products')
+    .then((farm) => console.log(farm));
+};
+
+showFarmWithProducts('Mikasa Ranch');
