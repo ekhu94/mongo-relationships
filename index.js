@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const User = require('./models/user');
+const Letter = require('./models/letter');
 const Farm = require('./models/farm');
 const Product = require('./models/product');
 
@@ -40,6 +41,25 @@ db.once('open', () => {
 //   console.log(res);
 // };
 
+const writeLetter = async () => {
+  const user = await User.findOne({ first: 'Kiryu' });
+  const letter = new Letter({
+    subject: 'Saving ARA-Q3',
+    content:
+      'Akio got his game stolen by a gang goomba so I tracked the rat down.',
+  });
+  letter.user = user;
+  await user.save();
+  await letter.save();
+};
+
+const showLetter = async () => {
+  const letter = await Letter.findOne({ subject: 'Saving ARA-Q3' }).populate(
+    'user'
+  );
+  console.log(letter);
+};
+
 // const createStardew = async () => {
 //   const farm = new Farm({
 //     name: 'Mikasa Ranch',
@@ -50,18 +70,18 @@ db.once('open', () => {
 //   console.log(farm);
 // };
 
-const buyNewProduct = async (productName) => {
-  const farm = await Farm.findOne({ name: 'Mikasa Ranch' });
-  const product = await Product.findOne({ name: productName });
-  farm.products.push(product);
-  await farm.save();
-  console.log(farm);
-};
+// const buyNewProduct = async (productName) => {
+//   const farm = await Farm.findOne({ name: 'Mikasa Ranch' });
+//   const product = await Product.findOne({ name: productName });
+//   farm.products.push(product);
+//   await farm.save();
+//   console.log(farm);
+// };
 
-const showFarmWithProducts = async (farmName) => {
-  const farm = await Farm.findOne({ name: farmName })
-    .populate('products')
-    .then((farm) => console.log(farm));
-};
+// const showFarmWithProducts = async (farmName) => {
+//   const farm = await Farm.findOne({ name: farmName })
+//     .populate('products')
+//     .then((farm) => console.log(farm));
+// };
 
-showFarmWithProducts('Mikasa Ranch');
+showLetter();
